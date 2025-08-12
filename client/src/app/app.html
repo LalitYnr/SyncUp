@@ -1,4 +1,9 @@
-<div class="card bg-base-100 w-1/2 mx-auto p-10 mt-10 shadow-xl">
+<app-nav></app-nav>
+<!-- <app-home [usersFromApp]="users()"></app-home> -->
+<app-home></app-home>
+
+
+<!-- <div class="card bg-base-100 w-1/2 mx-auto p-10 mt-20 shadow-xl">
     <h3 class="text-3xl text-red-100">{{title}}</h3>
     <ul class="list">
         @for (user of users(); track $index) {
@@ -7,8 +12,15 @@
                 <div>
                     {{user.userName}}
                 </div>
-                <hr/>
             </li>
         }
     </ul>
-</div>
+</div> -->
+<!-- 
+<div class="text-4xl font-bold text-red-600">Tailwind works!</div>
+<div class="flex justify-center space-x-4 mt-5">
+    <button class="btn btn-primary" (click)="loadUsers()">Load Users</button>
+    <button class="btn btn-secondary" (click)="register()">Register</button>
+    <button class="btn btn-accent" (click)="login()">Login</button>
+    <button class="btn btn-info" (click)="authorize()">Authorize</button>
+</div> -->
