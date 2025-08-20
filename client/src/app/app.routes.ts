@@ -5,6 +5,9 @@ import { UserDetailed } from '../features/users/user-detailed/user-detailed';
 import { Messages } from '../features/messages/messages';
 import { Lists } from '../features/lists/lists';
 import { authGuard } from '../core/guards/auth-guard';
+import { TestErrors } from '../features/test-errors/test-errors';
+import { NotFound } from '../shared/errors/not-found/not-found';
+import { ServerError } from '../shared/errors/server-error/server-error';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -19,5 +22,8 @@ export const routes: Routes = [
             { path: 'messages', component: Messages }
         ]
     },
+    { path: 'errors', component: TestErrors },
+    { path: 'server-error', component: ServerError },
+    { path: 'not-found', component: NotFound },
     { path: '**', component: Home } // Wildcard route for a 404 page
 ];
