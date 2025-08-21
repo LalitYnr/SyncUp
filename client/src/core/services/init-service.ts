@@ -10,9 +10,9 @@ export class InitService {
 
   init() {
     const userString = localStorage.getItem('user');
-    if (!userString) return of(null); 
-      const user = JSON.parse(userString);
-      this.accountService.currentUser.set(user);
-      return of(null);
+    if (!userString) return of(null);
+    const user = JSON.parse(userString);
+    this.accountService.currentUser.set(user);
+    return of(null);
   }
 }

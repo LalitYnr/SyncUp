@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.Middleware;
+using API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
@@ -45,5 +47,20 @@ app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider;
+try
+{
+    var dbContext = context.GetRequiredService<AppDbContext>();
+    await dbContext.Database.MigrateAsync();
+    await Seed.SeedUsers(dbContext);
+}
+catch (Exception ex)
+{
+    Console.WriteLine("An error occurred during migration: " + ex.Message);
+    var logger = context.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during migration");
+}
 
 app.Run();

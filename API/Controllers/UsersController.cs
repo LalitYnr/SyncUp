@@ -1,32 +1,38 @@
-using API.Data;
+using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SyncUp.API.Entities;
 
 namespace API.Controllers
 {
     [Authorize]
-    public class UsersController(AppDbContext context) : BaseApiController
+    public class UsersController(IMemberRepository memberRepository) : BaseApiController
     {
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<AppUser>>> GetUsers()
         {
-            var users = await context.Users.ToListAsync();
-            return Ok(users);
+            return Ok(await memberRepository.GetMembersAsync());
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(string id)
         {
-            var user = await context.Users.FindAsync(id);
+            var user = await memberRepository.GetMemberByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        //[AllowAnonymous]
+        [HttpGet("{id}/photos")]
+        public async Task<ActionResult<IReadOnlyList<Photo>>> GetUserPhotos(string id)
+        {
+            return Ok(await memberRepository.GetPhotosForMemberAsync(id));
         }
     }
 }
